@@ -1,0 +1,33 @@
+name: ios_fl_n_wildatlas_3425
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  logger: ^2.5.0
+  flutter_bloc: ^9.0.0
+  font_awesome_flutter: ^10.8.0
+  image_picker: ^1.1.2
+  url_launcher: ^6.3.1
+  modal_bottom_sheet: ^3.0.0
+  carousel_slider: ^5.0.0
+  flutter_map: ^8.1.1
+  latlong2: ^0.9.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/images/
+    - assets/images/natures/
