@@ -54,8 +54,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   bool get isValid =>
       nameController.text.isNotEmpty &&
       descriptionController.text.isNotEmpty &&
-      coordController.text.isNotEmpty &&
-      selectedLandscape != null;
+      coordController.text.isNotEmpty;
 
   void _submit() {
     if (isValid) {
