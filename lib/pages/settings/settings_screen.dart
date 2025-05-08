@@ -186,12 +186,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               _buildSettingTile(
                 'Privacy Policy',
-                () => _launchUrl('https://example.com/privacy'),
+                () => _launchUrl('https://www.termsfeed.com/live/14f765e8-cb29-41a5-acf4-a69e6b8588b0'),
               ),
-              _buildSettingTile(
-                'Terms of Use',
-                () => _launchUrl('https://example.com/terms'),
-              ),
+              // _buildSettingTile(
+              //   'Terms of Use',
+              //   () => _launchUrl('https://example.com/terms'),
+              // ),
             ],
           ),
         ),
