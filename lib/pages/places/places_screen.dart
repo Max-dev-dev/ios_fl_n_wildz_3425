@@ -59,7 +59,7 @@ class PlacesScreen extends StatelessWidget {
                             crossAxisCount: 2,
                             crossAxisSpacing: 12,
                             mainAxisSpacing: 16,
-                            childAspectRatio: 0.8,
+                            childAspectRatio: 0.98,
                           ),
                       itemCount: places.length,
                       itemBuilder: (context, index) {
@@ -79,12 +79,12 @@ class PlacesScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                                 child: Stack(
                                   children: [
-                                    Image.file(
-                                      place.photos.first,
-                                      width: double.infinity,
-                                      height: 140,
-                                      fit: BoxFit.cover,
-                                    ),
+                                    Image.asset(
+                                          'assets/images/forest1.png',
+                                          width: double.infinity,
+                                          height: 140,
+                                          fit: BoxFit.cover,
+                                        ),
                                     Positioned(
                                       top: 8,
                                       left: 8,

@@ -13,6 +13,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String _unit = 'km';
   String _selectedTempUnit = 'km';
 
+  bool isNotificationEnabled = true;
+  bool isVibrationEnabled = true;
+
   void _openUnitSelectionSheet() {
     showMaterialModalBottomSheet(
       context: context,
@@ -150,49 +153,96 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  Widget _buildSwitchTile(
+    String label,
+    bool value,
+    ValueChanged<bool> onChanged,
+  ) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      decoration: BoxDecoration(
+        color: const Color(0xFF6D42D8),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Switch(
+            value: value,
+            onChanged: onChanged,
+            activeColor: const Color(0xFFFFFF00),
+            inactiveThumbColor: Colors.white,
+            inactiveTrackColor: Colors.white30,
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF412786),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              const Text(
-                'Settings',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                const Text(
+                  'Settings',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Center(
-                child: Image.asset(
-                  'assets/images/forest.png',
-                  width: 210,
-                  height: 210,
-                  fit: BoxFit.fill,
+                const SizedBox(height: 20),
+                Center(
+                  child: Image.asset(
+                    'assets/images/forest.png',
+                    width: 210,
+                    height: 210,
+                    fit: BoxFit.fill,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              _buildSettingTile(
-                'Units of measurement',
-                _openUnitSelectionSheet,
-                value: _unit,
-              ),
-              _buildSettingTile(
-                'Privacy Policy',
-                () => _launchUrl('https://www.termsfeed.com/live/14f765e8-cb29-41a5-acf4-a69e6b8588b0'),
-              ),
-              // _buildSettingTile(
-              //   'Terms of Use',
-              //   () => _launchUrl('https://example.com/terms'),
-              // ),
-            ],
+                const SizedBox(height: 20),
+                _buildSettingTile(
+                  'Units of measurement',
+                  _openUnitSelectionSheet,
+                  value: _unit,
+                ),
+                _buildSwitchTile(
+                  'Notification',
+                  isNotificationEnabled,
+                  (val) => setState(() => isNotificationEnabled = val),
+                ),
+                _buildSwitchTile(
+                  'Vibration',
+                  isVibrationEnabled,
+                  (val) => setState(() => isVibrationEnabled = val),
+                ),
+                _buildSettingTile(
+                  'Privacy Policy',
+                  () => _launchUrl('https://www.termsfeed.com/live/14f765e8-cb29-41a5-acf4-a69e6b8588b0'),
+                ),
+                _buildSettingTile(
+                  'Terms of use',
+                  () => _launchUrl('https://www.termsfeed.com/live/1c1589fd-6655-461a-90dd-c5b4c423bb8f'),
+                ),
+                SizedBox(height: 10.0,)
+              ],
+            ),
           ),
         ),
       ),

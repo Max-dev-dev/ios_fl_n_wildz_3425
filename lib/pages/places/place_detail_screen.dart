@@ -50,7 +50,6 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
     final place = widget.place;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF412786),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -78,13 +77,6 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                         ],
                       ),
                     ),
-                    const Text(
-                      'Edit',
-                      style: TextStyle(
-                        color: Color(0xFFFEFE00),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -107,6 +99,13 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                 file,
                                 width: double.infinity,
                                 fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    'assets/images/forest1.png',
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  );
+                                },
                               ),
                             ),
                           );
