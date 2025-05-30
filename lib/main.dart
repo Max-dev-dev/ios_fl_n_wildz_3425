@@ -14,7 +14,7 @@ class AppConstants {
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   final now = DateTime.now();
-  final dateOff = DateTime(2024, 5, 30, 20, 00);
+  final dateOff = DateTime(2025, 6, 2, 20, 00);
 
   final initialRoute = now.isBefore(dateOff) ? '/white' : '/verify';
   runApp(RootApp(
