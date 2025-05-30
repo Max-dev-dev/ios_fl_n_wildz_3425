@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -215,13 +216,14 @@ class _UrlWebViewAppState extends State<UrlWebViewApp> {
               return handleDeepLink(uri: uri, controller: controller, ctx: context);
             },
             onCreateWindow: (controller, req) async {
-              Navigator.of(context).push(MaterialPageRoute(
-                fullscreenDialog: true,
-                builder: (_) => WebPopupScreen(
-                  initialUrl: req.request.url?.toString() ?? 'about:blank',
-                  windowId: req.windowId,
+              Navigator.of(context).push(
+                CupertinoPageRoute(
+                  builder: (_) => WebPopupScreen(
+                    initialUrl: req.request.url?.toString() ?? 'about:blank',
+                    windowId: req.windowId,
+                  ),
                 ),
-              ));
+              );
               return true;
             },
             onConsoleMessage: (controller, consoleMessage) {
@@ -246,37 +248,56 @@ class WebPopupScreen extends StatefulWidget {
 
 class _WebPopupScreenState extends State<WebPopupScreen> {
   late InAppWebViewController _ctrl;
-  bool _loading = true;
+
+  static const double _edgeWidth = 20.0;
+
   @override
   Widget build(BuildContext context) {
+    final webview = InAppWebView(
+      windowId: widget.windowId,
+      initialUrlRequest: widget.windowId == null
+          ? URLRequest(url: WebUri(widget.initialUrl))
+          : null,
+      initialSettings: InAppWebViewSettings(
+        allowsBackForwardNavigationGestures: false,
+        javaScriptCanOpenWindowsAutomatically: true,
+        supportMultipleWindows: true,
+        useShouldOverrideUrlLoading: true,
+      ),
+      onWebViewCreated: (c) => _ctrl = c,
+      shouldOverrideUrlLoading: (c, nav) =>
+          handleDeepLink(uri: nav.request.url!, controller: c, ctx: context),
+      onCloseWindow: (_) => Navigator.of(context).pop(),
+    );
+
     return WillPopScope(
-      onWillPop: () async {
-        Navigator.of(context).pop();
-        return false;
-      },
+      onWillPop: () async => true,
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: SafeArea(
-          top: true,
-          bottom: true,
-          child: InAppWebView(
-            windowId: widget.windowId,
-            initialUrlRequest: widget.windowId == null
-                ? URLRequest(url: WebUri(widget.initialUrl))
-                : null,
-            initialSettings: InAppWebViewSettings(
-              javaScriptCanOpenWindowsAutomatically: true,
-              supportMultipleWindows: true,
-              allowsBackForwardNavigationGestures: true,
-              useShouldOverrideUrlLoading: true,
+        body: Stack(
+          children: [
+            SafeArea(child: webview),
+
+            Positioned(
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: _edgeWidth,
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onHorizontalDragUpdate: (d) {
+                  if (d.primaryDelta != null && d.primaryDelta! > 12) {
+                    Navigator.of(context).maybePop();
+                  }
+                },
+              ),
             ),
-            onWebViewCreated: (c) => _ctrl = c,
-            onLoadStop: (_, __) => setState(() => _loading = false),
-            shouldOverrideUrlLoading: (c, nav) => handleDeepLink(uri: nav.request.url!, controller: c, ctx: context),
-            onCloseWindow: (_) => Navigator.of(context).pop(),
-          ),
+          ],
         ),
-        bottomNavigationBar: _NavigationBar(controllerGetter: () => _ctrl, onBackTap: () => Navigator.of(context).pop(),),
+        bottomNavigationBar: _NavigationBar(
+          controllerGetter: () => _ctrl,
+          onBackTap: () => Navigator.of(context).pop(),
+        ),
       ),
     );
   }
